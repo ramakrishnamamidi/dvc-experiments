@@ -1,0 +1,37 @@
+schema: '2.0'
+stages:
+  extract:
+    cmd: tar -xzf data/images.tar.gz --directory data
+    deps:
+    - path: data/images.tar.gz
+      md5: 3c8f026df7c3973bcec8e9f945026eb2
+      size: 34312619
+    outs:
+    - path: data/images/
+      md5: 0ebacd64e04c0e4a97d8fa48a4d707e6.dir
+      size: 35401667
+      nfiles: 70000
+  train:
+    cmd: python3 src/train.py
+    deps:
+    - path: data/images/
+      md5: 0ebacd64e04c0e4a97d8fa48a4d707e6.dir
+      size: 35401667
+      nfiles: 70000
+    - path: src/train.py
+      md5: 3b96a9fc3bc54ed2fbd31eb0f2c922dd
+      size: 3347
+    params:
+      params.yaml:
+        model.conv_units: 24
+        train.epochs: 10
+    outs:
+    - path: logs.csv
+      md5: ab48f004533f61708a5c3f1ce8710b15
+      size: 868
+    - path: metrics.json
+      md5: 08526d9dae441ffe8ec7b819656e3260
+      size: 56
+    - path: models/model.h5
+      md5: 5ed55a1f4833021450e9882d6863bfbb
+      size: 8363240
